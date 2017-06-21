@@ -80,8 +80,11 @@ MultiPathPlugin.prototype.apply = function (compiler) {
             let asset = compilation.assets[key];
             let content = asset.source();
 
-            if (typeof content === 'string' && !/((vendor)|(\.map$))/.test(key)) {
+            if (/\.(json|xml)/g.test(key)) {
+                content = content.toString();
+            }
 
+            if (typeof content === 'string' && !/((vendor)|(\.map$))/.test(key)) {
                 let replacePrefix = item => {
                     if (item[0] === '+') {
                         return item;
@@ -90,12 +93,11 @@ MultiPathPlugin.prototype.apply = function (compiler) {
                         if (ignoreMatch(ignores, p)) {
                             return p;
                         }
-                        console.log(key, p);
                         return p.replace(/\//, prefix);
                     });
                 };
 
-                let reg = /(([^\w]\s*(['"])((\/)|(\/\w+.*?))\3)|(\=\/[^\s\>]*))/g;
+                let reg = /(([^\w]\s*(['"])((\/)|(\/\w+.*?))\3)|(\=\s*?\/[^\s\>]*)|(\(\s*?\/[^\s]*\s*?\)))/g;
 
                 content = content.replace(reg, item => replacePrefix(item));
 
