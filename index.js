@@ -6,7 +6,6 @@
 /* eslint-disable */
 
 import minimatch from 'minimatch';
-import path from 'path';
 
 /**
  * MultiPath 插件
@@ -74,7 +73,7 @@ MultiPathPlugin.prototype.apply = function (compiler) {
     }
 
     ignores.push(prefix);
-    ignores.push(path.resolve(prefix, './**'));
+    ignores.push(prefix + '**');
     ignores = uniqArr(ignores);
 
     compiler.plugin('emit', (compilation, callback) => {
