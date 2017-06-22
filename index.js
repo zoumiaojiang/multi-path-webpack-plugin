@@ -69,6 +69,10 @@ MultiPathPlugin.prototype.apply = function (compiler) {
     let prefix = this.prefix || '/';
     let ignores = this.ignore;
 
+    if (!/\/$/g.test(prefix)) {
+        prefix = prefix + '/';
+    }
+
     ignores.push(prefix);
     ignores.push(path.resolve(prefix, './**'));
     ignores = uniqArr(ignores);
@@ -97,7 +101,7 @@ MultiPathPlugin.prototype.apply = function (compiler) {
                     });
                 };
 
-                let reg = /(([^\w]\s*(['"])((\/)|(\/\w+.*?))\3)|(\=\s*?\/[^\s\>]*)|(\(\s*?\/[^\s]*\s*?\)))/g;
+                let reg = /(([^\w]\s*(['"])((\/)|(\/\w+.*?))\3)|(\=\s*?\/\w+[^\s\>]*)|(\(\s*?\/[^\s]*\s*?\)))/g;
 
                 content = content.replace(reg, item => replacePrefix(item));
 
