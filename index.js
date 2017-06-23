@@ -14,7 +14,6 @@ import minimatch from 'minimatch';
  * @param {Object} options 参数
  */
 function MultiPathPlugin(options = {}) {
-    this.prefix = options.prefix || '/';
     this.ignore = [
         '*.vue',
         '**/*.vue',
@@ -65,18 +64,19 @@ function ignoreMatch(ignores, pathName) {
  */
 MultiPathPlugin.prototype.apply = function (compiler) {
 
-    let prefix = this.prefix || '/';
-    let ignores = this.ignore;
-
-    if (!/\/$/g.test(prefix)) {
-        prefix = prefix + '/';
-    }
-
-    ignores.push(prefix);
-    ignores.push(prefix + '**');
-    ignores = uniqArr(ignores);
-
     compiler.plugin('emit', (compilation, callback) => {
+
+        let publicPath = ((compilation.outputOptions.publicPath || '') + '/').replace(/\/{1,}/, '/');
+
+        if (!/\/$/g.test(publicPath)) {
+            publicPath = publicPath + '/';
+        }
+
+        let ignores = this.ignore;
+
+        ignores.push(publicPath);
+        ignores.push(publicPath + '**');
+        ignores = uniqArr(ignores);
 
         Object.keys(compilation.assets).forEach(key => {
 
@@ -89,14 +89,16 @@ MultiPathPlugin.prototype.apply = function (compiler) {
 
             if (typeof content === 'string' && !/((vendor)|(\.map$))/.test(key)) {
                 let replacePrefix = item => {
+
                     if (item[0] === '+') {
                         return item;
                     }
                     return item.replace(/\/[^'"?]*/g, p => {
-                        if (ignoreMatch(ignores, p)) {
+                        if (ignoreMatch(ignores, p) || !/[\w\-\_]+\.\w{1,}(\?.*)?$/.test(p)) {
                             return p;
                         }
-                        return p.replace(/\//, prefix);
+
+                        return p.replace(/\//, publicPath);
                     });
                 };
 

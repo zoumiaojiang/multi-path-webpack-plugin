@@ -1,6 +1,6 @@
 # multi-path-webpack-plugin
 
-解决 webpack 项目需要多级 path 部署时的全局绝对路径替换的问题
+解决 webpack 项目需要多级 path 部署时的全局静态资源绝对路径替换的问题
 
 ## Usage
 
@@ -45,7 +45,7 @@ webpack({
 
 ###  ignore
 
-ignore 参数可以指定你不想替换 path 的文件规则，规则同 [minimatch](https://github.com/isaacs/minimatch)
+ignore 参数可以指定你不想替换静态资源的 path 的规则，规则同 [minimatch](https://github.com/isaacs/minimatch)
 
 ```
 {
@@ -66,22 +66,18 @@ ignore 参数可以指定你不想替换 path 的文件规则，规则同 [minim
 ``` js
 // 如果 prefix 为 /prefix/
 
-var path = '/a/b/c';
-// 转成 /prefix/a/b/c
+var path = '/a/b/c.js';
+// 转成 /prefix/a/b/c.js
 
-var path1 = "/a/b/c";
-// 转成 /prefix/a/b/c
+var path1 = "/a/b/c.js";
+// 转成 /prefix/a/b/c.js
 
 
 <link href=/a/b/c ...>
 // 转成 <link href=/prefix/a/b/c>
 
-background: url(/a/b/c);
-// 转成 background: url(/prefix/a/b/c);
-
-var path2 = '/a/b/c' + '/d/e/f';
-// 转成 '/prefix/a/b/c' + '/d/e/f';
-
+background: url(/a/b/c.png);
+// 转成 background: url(/prefix/a/b/c.png);
 
 ```
 
