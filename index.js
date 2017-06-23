@@ -89,16 +89,15 @@ MultiPathPlugin.prototype.apply = function (compiler) {
 
             if (typeof content === 'string' && !/((vendor)|(\.map$))/.test(key)) {
                 let replacePrefix = item => {
-
                     if (item[0] === '+') {
                         return item;
                     }
-                    return item.replace(/\/[^'"?]*/g, p => {
+                    return item.replace(/\/[^'"?\)]*/g, p => {
                         if (ignoreMatch(ignores, p) || !/[\w\-\_]+\.\w{1,}(\?.*)?$/.test(p)) {
                             return p;
                         }
 
-                        return p.replace(/\//, publicPath);
+                        return (publicPath + p).replace(/\/{1,}/g, '/');
                     });
                 };
 

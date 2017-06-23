@@ -1,7 +1,7 @@
 {
   "name": "multi-path-webpack-plugin",
-  "version": "1.0.6",
-  "description": "a webpack plugin for multi level path deploy",
+  "version": "1.0.7",
+  "description": "a webpack plugin for multi level path deploy, replace absolute static path",
   "main": "dist/index.js",
   "scripts": {
     "build": "cross-env BABEL_ENV=production rollup -c",
