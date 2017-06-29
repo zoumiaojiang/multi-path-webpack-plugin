@@ -5,7 +5,7 @@
 
 /* eslint-disable */
 
-import minimatch from 'minimatch';
+const minimatch = require('minimatch');
 
 /**
  * MultiPath 插件
@@ -120,4 +120,4 @@ MultiPathPlugin.prototype.apply = function (compiler) {
     });
 };
 
-export default MultiPathPlugin;
+module.exports = MultiPathPlugin;
