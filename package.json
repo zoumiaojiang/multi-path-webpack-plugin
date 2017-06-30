@@ -18,6 +18,10 @@
   ],
   "author": "mj (zoumiaojiang@gmail.com)",
   "license": "ISC",
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
+  },
   "dependencies": {
     "minimatch": "^3.0.4"
   },

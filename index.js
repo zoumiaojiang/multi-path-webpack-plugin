@@ -33,8 +33,10 @@ function MultiPathPlugin(options = {}) {
  * @return {Array}     去重后的数组
  */
 function uniqArr(arr) {
-    const obj = {};
+    let obj = {};
+
     arr.forEach(item => obj[item] = true);
+
     return Object.keys(obj);
 }
 
@@ -47,6 +49,7 @@ function uniqArr(arr) {
  */
 function ignoreMatch(ignores, pathName) {
     let result = false;
+
     ignores.forEach(ignore => {
         if (minimatch(pathName, ignore)) {
             result = true;
@@ -65,21 +68,18 @@ function ignoreMatch(ignores, pathName) {
 MultiPathPlugin.prototype.apply = function (compiler) {
 
     compiler.plugin('emit', (compilation, callback) => {
-
         let publicPath = ((compilation.outputOptions.publicPath || '') + '/').replace(/\/{1,}/, '/');
+        let ignores = this.ignore;
 
         if (!/\/$/g.test(publicPath)) {
             publicPath = publicPath + '/';
         }
-
-        let ignores = this.ignore;
 
         ignores.push(publicPath);
         ignores.push(publicPath + '**');
         ignores = uniqArr(ignores);
 
         Object.keys(compilation.assets).forEach(key => {
-
             let asset = compilation.assets[key];
             let content = asset.source();
 
@@ -100,7 +100,6 @@ MultiPathPlugin.prototype.apply = function (compiler) {
                         return (publicPath + p).replace(/\/{1,}/g, '/');
                     });
                 };
-
                 let reg = /(([^\w]\s*(['"])((\/)|(\/\w+.*?))\3)|(\=\s*?\/\w+[^\s\>]*)|(\(\s*?\/[^\s]*\s*?\)))/g;
 
                 content = content.replace(reg, item => replacePrefix(item));
