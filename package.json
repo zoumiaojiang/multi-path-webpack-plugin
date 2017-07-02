@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "sh build.sh",
+    "lint": "fecs --ignore=./.gitignore index.js lib --rule",
     "prepublish": "npm run build & cd ./dist"
   },
   "repository": {

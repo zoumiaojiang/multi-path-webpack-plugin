@@ -3,8 +3,6 @@
  * @author mj(zoumiaojiang@gmail.com)
  */
 
-/* eslint-disable */
-
 const minimatch = require('minimatch');
 
 /**
@@ -58,7 +56,6 @@ function ignoreMatch(ignores, pathName) {
 
     return result;
 }
-
 
 /**
  * 插件入口
